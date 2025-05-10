@@ -1,14 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Unity\\Projects\\StreetSprint\\",
+  "WorkspaceRootPath": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|d:\\unity\\projects\\streetsprint\\assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|d:\\fast\\semester 8\\game dev\\project repo\\streetsprint\\assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|d:\\unity\\projects\\streetsprint\\assets\\scripts\\camerafollow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camerafollow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -24,26 +20,13 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "PlayerMovement.cs",
-              "DocumentMoniker": "D:\\Unity\\Projects\\StreetSprint\\Assets\\Scripts\\PlayerMovement.cs",
+              "DocumentMoniker": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\Assets\\Scripts\\PlayerMovement.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerMovement.cs",
-              "ToolTip": "D:\\Unity\\Projects\\StreetSprint\\Assets\\Scripts\\PlayerMovement.cs",
+              "ToolTip": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\Assets\\Scripts\\PlayerMovement.cs",
               "RelativeToolTip": "Assets\\Scripts\\PlayerMovement.cs",
-              "ViewState": "AgIAAJgAAAAAAAAAAAAiwKcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAIwN8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-10T15:03:03.53Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CameraFollow.cs",
-              "DocumentMoniker": "D:\\Unity\\Projects\\StreetSprint\\Assets\\Scripts\\CameraFollow.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\CameraFollow.cs",
-              "ToolTip": "D:\\Unity\\Projects\\StreetSprint\\Assets\\Scripts\\CameraFollow.cs",
-              "RelativeToolTip": "Assets\\Scripts\\CameraFollow.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAiwCoAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-10T15:02:53.703Z",
               "EditorCaption": ""
             }
           ]
