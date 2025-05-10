@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour
     // Touch detection
     private float touchStartX;
     private float touchEndX;
-    private float minSwipeDistance = 50f; // Minimum swipe distance in pixels
+    private float touchStartY;
+    private float minSwipeDistance = 50f;
 
     // Movement state
     private Vector3 targetPosition;
@@ -26,50 +27,48 @@ public class PlayerMovement : MonoBehaviour
 
     // Components
     private Rigidbody rb;
-    private Animator animator; // Optional: if character has animations
+    private Animation anim;
 
     void Start()
     {
-        // Get components
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>(); // Optional
+        anim = GetComponent<Animation>();
 
-        // Initialize lane position
         currentLane = startingLane;
         UpdateTargetPosition();
-
-        // Set initial position
         transform.position = targetPosition;
+
+        // Start with Run animation
+        if (anim != null && anim.GetClip("Run") != null)
+        {
+            anim.Play("Run");
+        }
     }
 
     void Update()
     {
-        // Handle touch input for lane changes
         HandleTouchInput();
     }
 
     void FixedUpdate()
     {
-        // Automatic forward movement
+        // Forward movement
         Vector3 forwardMovement = Vector3.forward * forwardSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + forwardMovement);
 
-        // Lane changing movement (if not at target position)
+        // Lane changing
         if (isChangingLanes)
         {
             Vector3 movementDirection = (targetPosition - transform.position).normalized;
             Vector3 laneMovement = movementDirection * laneChangeSpeed * Time.fixedDeltaTime;
 
-            // Calculate distance to target
             float distanceToTarget = Vector3.Distance(
                 new Vector3(transform.position.x, 0, 0),
                 new Vector3(targetPosition.x, 0, 0)
             );
 
-            // If close enough to target or would overshoot
             if (distanceToTarget < laneMovement.magnitude)
             {
-                // Snap to exact lane position
                 Vector3 newPosition = transform.position;
                 newPosition.x = targetPosition.x;
                 transform.position = newPosition;
@@ -77,7 +76,6 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                // Move toward target lane
                 rb.MovePosition(rb.position + laneMovement);
             }
         }
@@ -85,10 +83,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleTouchInput()
     {
-        // Skip input processing if currently changing lanes
         if (isChangingLanes) return;
 
-        // Process touch input for mobile
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -97,29 +93,46 @@ public class PlayerMovement : MonoBehaviour
             {
                 case TouchPhase.Began:
                     touchStartX = touch.position.x;
+                    touchStartY = touch.position.y;
                     break;
 
                 case TouchPhase.Ended:
                     touchEndX = touch.position.x;
-                    float swipeDistance = touchEndX - touchStartX;
+                    float touchEndY = touch.position.y;
 
-                    // Determine if swipe was significant enough
-                    if (Mathf.Abs(swipeDistance) > minSwipeDistance)
+                    float swipeX = touchEndX - touchStartX;
+                    float swipeY = touchEndY - touchStartY;
+
+                    if (Mathf.Abs(swipeX) > Mathf.Abs(swipeY))
                     {
-                        if (swipeDistance > 0 && currentLane < 2) // Swipe right
+                        // Horizontal swipe
+                        if (Mathf.Abs(swipeX) > minSwipeDistance)
                         {
-                            ChangeLane(1);
-                        }
-                        else if (swipeDistance < 0 && currentLane > 0) // Swipe left
-                        {
-                            ChangeLane(-1);
+                            if (swipeX > 0 && currentLane < 2)
+                            {
+                                ChangeLane(1);
+                            }
+                            else if (swipeX < 0 && currentLane > 0)
+                            {
+                                ChangeLane(-1);
+                            }
                         }
                     }
+                    else
+                    {
+                        // Vertical swipe
+                        if (swipeY > minSwipeDistance && !isJumping)
+                        {
+                            StartCoroutine(Jump());
+                        }
+
+                        //swipe down to implement
+                    }
+
                     break;
             }
         }
 
-        // For testing in editor with keyboard
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 0)
         {
@@ -141,26 +154,25 @@ public class PlayerMovement : MonoBehaviour
         currentLane += direction;
         UpdateTargetPosition();
         isChangingLanes = true;
-
-        // Optional: Play animation if you have one
-        // if (animator != null) animator.SetTrigger("SidestepTrigger");
     }
 
     private void UpdateTargetPosition()
     {
-        // Calculate the target x position based on current lane
-        float targetX = (currentLane - 1) * laneDistance; // -1 for left, 0 for center, 1 for right
+        float targetX = (currentLane - 1) * laneDistance;
         targetPosition = new Vector3(targetX, transform.position.y, transform.position.z);
     }
 
-    // Optional: Add jump functionality for future use
     private IEnumerator Jump()
     {
         if (isJumping) yield break;
 
         isJumping = true;
-        // Optional: Trigger jump animation
-        // if (animator != null) animator.SetTrigger("JumpTrigger");
+
+        // Play jump animation
+        if (anim != null && anim.GetClip("Runtojumpspring") != null)
+        {
+            anim.Play("Runtojumpspring");
+        }
 
         float jumpStartTime = Time.time;
         float jumpEndTime = jumpStartTime + jumpDuration;
@@ -169,12 +181,9 @@ public class PlayerMovement : MonoBehaviour
         while (Time.time < jumpEndTime)
         {
             float timeProgress = (Time.time - jumpStartTime) / jumpDuration;
-
-            // Parabolic jump curve
             float heightProgress = Mathf.Sin(timeProgress * Mathf.PI);
             float currentHeight = heightProgress * jumpHeight;
 
-            // Set the new position with jump height
             Vector3 newPos = transform.position;
             newPos.y = startPos.y + currentHeight;
             transform.position = newPos;
@@ -182,10 +191,15 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // Make sure we land exactly at the starting height
         Vector3 landPos = transform.position;
         landPos.y = startPos.y;
         transform.position = landPos;
+
+        // Return to Run animation
+        if (anim != null && anim.GetClip("Run") != null)
+        {
+            anim.CrossFade("Run");
+        }
 
         isJumping = false;
     }
