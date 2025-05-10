@@ -3435,7 +3435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 645250597}
   targetTag: Player
-  offset: {x: 0, y: 5, z: -12}
+  offset: {x: 0, y: 8, z: -15}
   smoothSpeed: 10
   lookAtTarget: 1
   lookOffset: {x: 0, y: 1, z: 0}
