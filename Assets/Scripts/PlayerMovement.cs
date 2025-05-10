@@ -8,24 +8,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float laneChangeSpeed = 5f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float jumpDuration = 0.5f;
+    [SerializeField] private float slideDuration = 0.5f;
 
     [Header("Lane Settings")]
     [SerializeField] private float laneDistance = 2f;
-    [SerializeField] private int startingLane = 1; // 0 = left, 1 = center, 2 = right
+    [SerializeField] private int startingLane = 1;
 
-    // Touch detection
     private float touchStartX;
     private float touchEndX;
     private float touchStartY;
     private float minSwipeDistance = 50f;
 
-    // Movement state
     private Vector3 targetPosition;
     private int currentLane;
     private bool isChangingLanes = false;
     private bool isJumping = false;
+    private bool isSliding = false;
 
-    // Components
     private Rigidbody rb;
     private Animation anim;
 
@@ -38,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
         UpdateTargetPosition();
         transform.position = targetPosition;
 
-        // Start with Run animation
         if (anim != null && anim.GetClip("Run") != null)
         {
             anim.Play("Run");
@@ -52,11 +50,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Forward movement
         Vector3 forwardMovement = Vector3.forward * forwardSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + forwardMovement);
 
-        // Lane changing
         if (isChangingLanes)
         {
             Vector3 movementDirection = (targetPosition - transform.position).normalized;
@@ -125,8 +121,10 @@ public class PlayerMovement : MonoBehaviour
                         {
                             StartCoroutine(Jump());
                         }
-
-                        //swipe down to implement
+                        else if (swipeY < -minSwipeDistance && !isSliding)
+                        {
+                            StartCoroutine(Slide());
+                        }
                     }
 
                     break;
@@ -146,6 +144,10 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Jump());
         }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && !isSliding)
+        {
+            StartCoroutine(Slide());
+        }
 #endif
     }
 
@@ -164,11 +166,8 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Jump()
     {
-        if (isJumping) yield break;
-
         isJumping = true;
 
-        // Play jump animation
         if (anim != null && anim.GetClip("Runtojumpspring") != null)
         {
             anim.Play("Runtojumpspring");
@@ -195,12 +194,30 @@ public class PlayerMovement : MonoBehaviour
         landPos.y = startPos.y;
         transform.position = landPos;
 
-        // Return to Run animation
         if (anim != null && anim.GetClip("Run") != null)
         {
             anim.CrossFade("Run");
         }
 
         isJumping = false;
+    }
+
+    private IEnumerator Slide()
+    {
+        isSliding = true;
+
+        if (anim != null && anim.GetClip("Runtoslide") != null)
+        {
+            anim.Play("Runtoslide");
+        }
+
+        yield return new WaitForSeconds(slideDuration);
+
+        if (anim != null && anim.GetClip("Run") != null)
+        {
+            anim.CrossFade("Run");
+        }
+
+        isSliding = false;
     }
 }
