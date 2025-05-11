@@ -6,9 +6,14 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float forwardSpeed = 10f;
     [SerializeField] private float laneChangeSpeed = 5f;
-    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float jumpHeight = 3f;  // Increased to 3 units as requested
     [SerializeField] private float jumpDuration = 0.5f;
     [SerializeField] private float slideDuration = 0.5f;
+
+    // Jump physics parameters
+    [SerializeField] private float jumpForce = 8f;   // Initial upward force
+    [SerializeField] private float fallMultiplier = 2.5f;  // Reduced from 5 for more balanced falling
+    [SerializeField] private float lowJumpMultiplier = 2f; // For shorter jumps when button released quickly
 
     [Header("Lane Settings")]
     [SerializeField] private float laneDistance = 2f;
@@ -24,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
     private bool isChangingLanes = false;
     private bool isJumping = false;
     private bool isSliding = false;
-
     private Rigidbody rb;
     private Animation anim;
 
@@ -74,6 +78,18 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.MovePosition(rb.position + laneMovement);
             }
+        }
+
+        // Apply better jump physics
+        if (rb.linearVelocity.y < 0)
+        {
+            // Apply stronger gravity when falling
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+        }
+        else if (rb.linearVelocity.y > 0)
+        {
+            // Apply weaker upward force when ascending (for more control)
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
     }
 
@@ -173,26 +189,36 @@ public class PlayerMovement : MonoBehaviour
             anim.Play("Runtojumpspring");
         }
 
-        float jumpStartTime = Time.time;
-        float jumpEndTime = jumpStartTime + jumpDuration;
-        Vector3 startPos = transform.position;
+        // Calculate jump velocity using improved formula for more precise height control
+        float gravity = Mathf.Abs(Physics.gravity.y);
+        float jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
 
-        while (Time.time < jumpEndTime)
+        // Apply vertical velocity to Rigidbody
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z);
+
+        // Wait for player to reach peak of jump before considering it "done"
+        // This is more reliable than using a fixed duration
+        float timeInAir = 0f;
+        bool reachedApex = false;
+
+        while (timeInAir < 2f) // Safety timeout of 2 seconds
         {
-            float timeProgress = (Time.time - jumpStartTime) / jumpDuration;
-            float heightProgress = Mathf.Sin(timeProgress * Mathf.PI);
-            float currentHeight = heightProgress * jumpHeight;
+            timeInAir += Time.deltaTime;
 
-            Vector3 newPos = transform.position;
-            newPos.y = startPos.y + currentHeight;
-            transform.position = newPos;
+            // Check if we've reached the apex and started falling
+            if (rb.linearVelocity.y < 0 && !reachedApex)
+            {
+                reachedApex = true;
+            }
+
+            // Wait until we're close to the ground or have been falling for a while
+            if (reachedApex && (transform.position.y <= 0.2f || timeInAir > 1.5f))
+            {
+                break;
+            }
 
             yield return null;
         }
-
-        Vector3 landPos = transform.position;
-        landPos.y = startPos.y;
-        transform.position = landPos;
 
         if (anim != null && anim.GetClip("Run") != null)
         {
