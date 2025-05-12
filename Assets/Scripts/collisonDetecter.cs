@@ -35,6 +35,7 @@ public class collisonDetecter : MonoBehaviour
         yield return new WaitForSeconds(1);
         fadeOut.GetComponent<Animator>().enabled = true;
         yield return new WaitForSeconds(3);
+        MasterUI.score = 0;
         SceneManager.LoadScene(0);
     }
 }
