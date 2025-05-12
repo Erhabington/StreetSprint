@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class collisonDetecter : MonoBehaviour
 {
     [SerializeField] private GameObject player;
@@ -34,5 +34,7 @@ public class collisonDetecter : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         fadeOut.GetComponent<Animator>().enabled = true;
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(0);
     }
 }
