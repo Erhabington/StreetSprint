@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|d:\\fast\\semester 8\\game dev\\project repo\\streetsprint\\assets\\scripts\\segmentobjectgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\segmentobjectgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|d:\\fast\\semester 8\\game dev\\project repo\\streetsprint\\assets\\scripts\\segmentgenarator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D4E8A0A9-D1A8-D06B-FE4A-BFEB0758DDC0}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\segmentgenarator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,6 +23,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "SegmentObjectGenerator.cs",
+              "DocumentMoniker": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\Assets\\Scripts\\SegmentObjectGenerator.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SegmentObjectGenerator.cs",
+              "ToolTip": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\Assets\\Scripts\\SegmentObjectGenerator.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SegmentObjectGenerator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-12T11:58:51.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "SegmentGenarator.cs",
               "DocumentMoniker": "D:\\Fast\\Semester 8\\Game Dev\\Project Repo\\StreetSprint\\Assets\\Scripts\\SegmentGenarator.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\SegmentGenarator.cs",

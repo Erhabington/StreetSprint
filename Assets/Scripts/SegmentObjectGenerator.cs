@@ -8,7 +8,7 @@ public class SegmentObjectGenerator : MonoBehaviour
     [SerializeField] private float segmentLength = 115f;
 
     // Fixed lane positions
-    private float[] lanePositions = new float[] { -20f, 0f, 20f };
+    private float[] lanePositions = new float[] { -40f, -20f, 0f };
 
     [Header("Coin Settings")]
     [SerializeField] private GameObject coinPrefab;
